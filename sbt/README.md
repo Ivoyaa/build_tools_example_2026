@@ -16,4 +16,4 @@ sbt server/run
 
 `buildSignature` показывает автоматический кеш задач: повторите `show` в одном sbt shell или из двух CLI-вызовов и смотрите на `onsite task` / `disk cache hit` в итоговой статистике. `server/run` использует client-side run через sbtn. BOM-пример — `jackson-bom` и `jackson-core` без версии в `build.sbt`.
 
-Полный сценарий: [`../DEMO.md`](../DEMO.md).
+Полный сценарий находится в локальном `../DEMO.md` (файл намеренно не хранится в Git).
