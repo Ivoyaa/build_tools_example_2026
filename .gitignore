@@ -5,6 +5,7 @@
 .metals/
 .scala-build/
 .tools/
+/DEMO.md
 
 target/
 out/
