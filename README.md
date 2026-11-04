@@ -22,7 +22,62 @@
 | [Pants](pants/) | 2.33.0 | `pants test ::` | `pants run server/src/main/scala:talks-server` |
 | [Scala CLI](scala-cli/) | 1.18.0 | `scala-cli test core && scala-cli test server core` | `scala-cli run server core` |
 
-Требуется JDK 17+. Mill и Pants скачивают выбранную JDK сами; для sbt и Scala CLI её нужно иметь в `JAVA_HOME`/`PATH`. Mill уже содержит bootstrap-скрипт. Для остальных инструментов установка описана в их локальных README.
+Требуется JDK 17+. Mill и Pants скачивают выбранную JDK сами; для sbt и Scala CLI её нужно иметь в `JAVA_HOME`/`PATH`. Mill уже содержит bootstrap-скрипт. Для остальных инструментов установка описана ниже.
+
+## Установка инструментов
+
+### macOS с Homebrew
+
+```bash
+# JDK 17 для sbt и Scala CLI
+brew install --cask temurin@17
+
+# sbt и Bazelisk
+brew install sbt bazelisk
+
+# Coursier нужен для установки Bleep
+brew install coursier/formulas/coursier
+cs install bleep
+
+# Pants с нативным launcher
+brew install pantsbuild/tap/pants
+
+# Scala CLI
+brew install VirtusLab/scala-cli/scala-cli
+```
+
+Mill устанавливать глобально не нужно: команды запускаются через `./mill` из директории `mill/`. Bleep загрузит версию, указанную в `bleep.yaml`, Bazelisk — Bazel из `.bazelversion`, а Pants — версию из `pants.toml`.
+
+Если JDK уже управляется через Coursier, для текущего терминала можно использовать:
+
+```bash
+eval "$(cs java --jvm temurin:17 --env)"
+java -version
+```
+
+### Другие ОС
+
+- sbt: [официальная установка](https://www.scala-sbt.org/2.x/docs/en/setup.html).
+- Mill: не требуется, используйте включённый `mill/mill` (macOS/Linux) или скачайте `mill.bat` по [инструкции](https://mill-build.org/mill/cli/installation-ide.html).
+- Bleep: [нативные пакеты и Coursier](https://bleep.build/docs/installation/).
+- Bazel: установите [Bazelisk](https://github.com/bazelbuild/bazelisk), не обязательно ставить Bazel отдельно.
+- Pants: [нативный launcher](https://www.pantsbuild.org/stable/docs/getting-started/installing-pants); внешний Python не нужен.
+- Scala CLI: [пакеты для macOS, Linux и Windows](https://scala-cli.virtuslab.org/install).
+
+### Проверка установки
+
+```bash
+java -version
+sbt --script-version
+bleep --help
+bazelisk version
+scala-cli version
+
+(cd mill && ./mill --version)
+(cd pants && pants --version)
+```
+
+После этого переходите в директорию нужного инструмента и используйте команды из таблицы выше.
 
 ## HTTP-сценарий
 
