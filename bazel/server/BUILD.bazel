@@ -1,0 +1,36 @@
+load("@rules_scala//scala:scala.bzl", "scala_binary", "scala_junit_test", "scala_library")
+
+scala_library(
+    name = "server",
+    srcs = glob(["src/main/scala/**/*.scala"]),
+    deps = [
+        "//core",
+        "@maven//:com_fasterxml_jackson_core_jackson_core",
+        "@maven//:com_softwaremill_sttp_tapir_tapir_core_3",
+        "@maven//:com_softwaremill_sttp_tapir_tapir_jdkhttp_server_3",
+        "@maven//:com_softwaremill_sttp_tapir_tapir_json_circe_3",
+        "@maven//:com_softwaremill_sttp_model_core_3",
+        "@maven//:com_softwaremill_sttp_shared_core_3",
+        "@maven//:io_circe_circe_core_3",
+        "@maven//:io_circe_circe_generic_3",
+        "@maven//:org_typelevel_cats_core_3",
+    ],
+)
+
+scala_binary(
+    name = "talks-server",
+    main_class = "demo.server.Main",
+    deps = [":server"],
+)
+
+scala_junit_test(
+    name = "server-test",
+    suffixes = ["Spec"],
+    srcs = glob(["src/test/scala/**/*.scala"]),
+    deps = [
+        ":server",
+        "//core",
+        "@maven//:org_scalameta_munit_3",
+        "@maven//:org_scalameta_munit_diff_3",
+    ],
+)

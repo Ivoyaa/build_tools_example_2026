@@ -1,0 +1,32 @@
+module(name = "talks", version = "1.0")
+
+bazel_dep(name = "rules_scala", version = "7.4.1")
+bazel_dep(name = "rules_jvm_external", version = "6.9")
+
+scala_config = use_extension("@rules_scala//scala/extensions:config.bzl", "scala_config")
+scala_config.settings(scala_version = "3.8.4")
+
+scala_deps = use_extension("@rules_scala//scala/extensions:deps.bzl", "scala_deps")
+scala_deps.scala()
+scala_deps.junit()
+
+scala_protoc = use_extension("@rules_scala//scala/extensions:protoc.bzl", "scala_protoc", dev_dependency = True)
+use_repo(scala_protoc, "rules_scala_protoc_toolchains")
+register_toolchains("@rules_scala_protoc_toolchains//...:all", dev_dependency = True)
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    name = "maven",
+    artifacts = [
+        "com.softwaremill.sttp.tapir:tapir-core_3:1.12.3",
+        "com.softwaremill.sttp.tapir:tapir-json-circe_3:1.12.3",
+        "com.softwaremill.sttp.tapir:tapir-jdkhttp-server_3:1.12.3",
+        "com.fasterxml.jackson.core:jackson-core",
+        "org.scalameta:munit_3:1.1.1",
+    ],
+    boms = ["com.fasterxml.jackson:jackson-bom:2.21.0"],
+    fetch_sources = True,
+    lock_file = "//:maven_install.json",
+    repositories = ["https://repo1.maven.org/maven2"],
+)
+use_repo(maven, "maven")

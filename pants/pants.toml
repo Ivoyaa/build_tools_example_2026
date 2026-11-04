@@ -1,0 +1,26 @@
+[GLOBAL]
+pants_version = "2.33.0"
+backend_packages = [
+  "pants.backend.experimental.java",
+  "pants.backend.experimental.scala",
+]
+process_execution_local_enable_nailgun = false
+
+[source]
+root_patterns = [
+  "/core/src/main/scala",
+  "/core/src/test/scala",
+  "/server/src/main/scala",
+  "/server/src/test/scala",
+]
+
+[jvm]
+default_resolve = "jvm-default"
+resolves = {"jvm-default" = "3rdparty/jvm/default.lock"}
+jdk = "temurin:17"
+
+[scala]
+version_for_resolve = {"jvm-default" = "3.8.4"}
+
+[repl]
+shell = "scala"

@@ -1,0 +1,28 @@
+//| mill-jvm-version: temurin:17
+
+package build
+
+import mill.*, scalalib.*
+
+trait TalksModule extends CrossScalaModule
+
+object core extends Cross[CoreModule](Seq("2.13.18", "3.8.4"))
+trait CoreModule extends TalksModule {
+  object test extends ScalaTests, TestModule.Munit {
+    def mvnDeps = Seq(mvn"org.scalameta::munit:1.1.1")
+  }
+}
+
+object server extends Cross[ServerModule](Seq("2.13.18", "3.8.4"))
+trait ServerModule extends TalksModule {
+  def moduleDeps = Seq(core())
+  def mvnDeps = Seq(
+    mvn"com.softwaremill.sttp.tapir::tapir-core:1.12.3",
+    mvn"com.softwaremill.sttp.tapir::tapir-json-circe:1.12.3",
+    mvn"com.softwaremill.sttp.tapir::tapir-jdkhttp-server:1.12.3"
+  )
+
+  object test extends ScalaTests, TestModule.Munit {
+    def mvnDeps = Seq(mvn"org.scalameta::munit:1.1.1")
+  }
+}

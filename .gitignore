@@ -1,0 +1,16 @@
+.idea/
+.bsp/
+.bleep/
+.bloop/
+.metals/
+.scala-build/
+.tools/
+
+target/
+out/
+dist/
+.bazel/
+.bazelrc.user
+bazel-*
+.pants.d/
+pants.log*
